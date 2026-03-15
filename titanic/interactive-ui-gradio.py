@@ -1,3 +1,22 @@
+import sys
+from pathlib import Path
+
+root_dir = Path().absolute()
+# Strip ~/notebooks/ccfraud from PYTHON_PATH if notebook started in one of these subdirectories
+if root_dir.parts[-1:] == ('notebooks',):
+    root_dir = Path(*root_dir.parts[:-1])
+    sys.path.append(str(root_dir))
+if root_dir.parts[-1:] == ('titanic',):
+    root_dir = Path(*root_dir.parts[:-1])
+    sys.path.append(str(root_dir))
+root_dir = str(root_dir) 
+
+print(f"Root dir: {root_dir}")
+
+# Set the environment variables from the file <root_dir>/.env
+from mlfs import config
+settings = config.HopsworksSettings(_env_file=f"{root_dir}/.env")
+
 import gradio as gr
 import numpy as np
 from PIL import Image
@@ -11,7 +30,7 @@ fs = project.get_feature_store()
 
 
 mr = project.get_model_registry()
-model = mr.get_model("titanic_modal", version=1)
+model = mr.get_model("titanic", version=1)
 model_dir = model.download()
 model = joblib.load(model_dir + "/titanic_model.pkl")
 
@@ -34,7 +53,6 @@ demo = gr.Interface(
     fn=titanic,
     title="Titanic Passenger Survival Predictive Analytics",
     description="Enter values for an imaginary passenger and the model will predict whether he/she survived or not.",
-        allow_flagging="never",
     inputs=[
         gr.Dropdown(choices=["male","female"],type='index', label="Sex"),
         gr.Slider(minimum=1.0,maximum=100.0, step=1.0, label="Age"),
