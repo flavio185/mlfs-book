@@ -7,3 +7,4 @@ matplotlib
 seaborn
 invoke
 uv
+gradio>=6.9.0
