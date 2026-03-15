@@ -130,6 +130,16 @@ def inference(c):
     c.run(uv_run("papermill --log-output notebooks/4-scheduled-titanic-batch-inference-daily.ipynb notebooks/4-scheduled-titanic-batch-inference-daily.ipynb"))
 
 
+@task
+def gradio(c):
+    """Launches the Gradio interactive UI."""
+    check_venv()
+    print("#################################################")
+    print("############# Gradio Interactive UI #############")
+    print("#################################################")
+    c.run(uv_run("python interactive-ui-gradio.py"))
+
+
 @task(pre=[backfill, features, train, inference])
 def all(c):
     """Runs all the FTI pipelines in order."""
