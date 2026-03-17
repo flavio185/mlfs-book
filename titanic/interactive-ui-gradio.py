@@ -45,7 +45,7 @@ def titanic(Sex, Age, Pclass, Fare, Parch, SibSp, Embarked):
     input_list.append(SibSp)
     input_list.append(Embarked)
     res = model.predict(np.asarray(input_list).reshape(1, -1))
-    pic_url = "https://raw.githubusercontent.com/featurestorebook/mlfs-book/main/docs/assets/img/titanic_" + str(res[0]) + ".jpg"
+    pic_url = "https://raw.githubusercontent.com/featurestorebook/mlfs-book/main/docs/titanic/assets/img/titanic_" + str(res[0]) + ".jpg"
     img = Image.open(requests.get(pic_url, stream=True).raw)
     return img
 
